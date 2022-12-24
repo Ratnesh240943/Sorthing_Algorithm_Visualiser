@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        html, body{
+            width : 100%;
+            height : 100%;
+            margin : 0;
+            padding: 0;
+        }
+        #heading{
+            font-family: 'Poppins', sans-serif;
+            color : black;
+            font-size : 5vh;
+            text-align: center;
+        }
+        .container {
+            box-sizing: border-box;
+            height : 100vh;
+            border : 10px solid blue;
+            display : flex;
+            flex-flow: column;
+            justify-content: space-around;
+        }
+        .c1{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: 'Poppins', sans-serif;
+            font-weight: bold;
+            width: 80%;
+            margin-left: auto;
+            margin-right: auto;
+            font-size: 3vh;
+        }
+        .c2{
+            box-sizing: border-box;
+            height : 200px;
+            width: 400px;
+            border : 10px solid blue;
+        }
+        .c2:hover{
+            filter: contrast(150%) opacity(90%) hue-rotate(300deg);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+    <div id="heading">Sorting Algorithms</div>
+    <div class="c1">Selection Sort <a href="Selection.html" target="_blank"><div class="c2" style="background: url(Selection.png); background-size: 100% 100%;"></div></a></div>
+    <div class="c1">Insertion Sort <a href="Insertion.html" target="_blank"><div class="c2"style="background: url(Insertion.png); background-size: 100% 100%;"></div></a></div>
+    <div class="c1">Bubble Sort <a href="bubble.html" target="_blank"><div class="c2" style="background: url(bubble.png); background-size: 100% 100%;"></div></a></div>
+    </div>
+</body>
+</html>

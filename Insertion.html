@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+    <title>Document</title>
+    <style>
+        html, body{
+            width : 100%;
+            height : 100%;
+            margin : 0;
+            padding: 0;
+        }
+        nav{
+            margin: 0;
+            background-image : linear-gradient(45deg, cyan , pink);
+            height : 20vh;
+            width : 100%
+        }
+        nav ul{
+            width : 100%;
+            padding : 0;
+            list-style: none;
+            text-decoration: none;
+            margin : 0;
+            display : flex;
+            justify-content: space-evenly;
+            align-items: center;
+            height: 100%;
+            width : 100%;
+            font-family: 'Poppins', sans-serif;
+            font-weight: bolder;
+            font-size: 6vh;
+            color : white;
+            
+        }
+        nav li{
+            padding : 2vh 5vh;
+            border: 8px solid white;
+            border-radius: 1em;
+            cursor : pointer;
+            transition : 1s;
+        }
+        nav li:hover{
+            color : black;
+            background : white;
+        }
+        .container {
+            box-sizing: border-box;
+            height : 80vh;
+            border : 10px solid blue;
+            display : flex;
+            flex-flow: column;
+        }
+        .container1{  
+            display : flex;
+            justify-content: center;
+            align-items: center;
+            flex-grow: 1;
+            padding-top: 10vh;
+        }
+        #heading{
+            font-family: 'Poppins', sans-serif;
+            color : black;
+            font-size : 7vh;
+            text-align: center;
+            margin-top: 1vh;
+            width : 100%;
+        }
+        .card{
+            display : inline-block;
+            margin : 1.2vw;
+            width : 10vh;
+            height : 20vh;
+            background-image: linear-gradient(30deg, #1fcde4 30%, #2113e2);
+            border-radius: 12%;
+            border : 4px solid rgb(172, 196, 248);
+            font-size : 5vh;
+            text-align: center;
+            line-height: 20vh;
+        }
+        .card.current{
+            transform: scale(1.2,1.2) translate(0,-20vh);
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li id="Start">Start</li>
+            <li id="Stop">Stop</li>
+        </ul>
+    </nav>
+    <div class="container">
+        <div id="heading">Insertion Sort</div>
+        <div class="container1">
+        <div class="card"></div>
+        <div class="card"></div>
+        <div class="card"></div>
+        <div class="card"></div>
+        <div class="card"></div>
+        <div class="card"></div>
+        <div class="card"></div>
+        <div class="card"></div>
+        <div class="card"></div>
+        <div class="card"></div>
+    </div>
+    </div>
+    <script>
+        let card = document.getElementsByClassName('card');
+        for (let index = 0; index < card.length; index++) {
+            card[index].textContent = Math.floor(Math.random() * 100) + 1;
+        }
+        function sleep(ms){
+            return new Promise(resolve => setTimeout(resolve,ms));
+        }
+        let start = 0;
+        document.getElementById('Start').addEventListener("click",async function(){
+            start = 0;
+            await sleep(2600);
+            start = 1;
+            
+            for(let i = 1; i < card.length; i++)
+            {
+                card[i].style.cssText = 'transition: 1s;';
+                card[i].classList.add("current");
+                await sleep(1500);
+                card[i].style.cssText = 'transition: 0s;';
+                let j;
+                for(j = i-1; j>=0; j--)
+                {
+                    await sleep(2000);
+                    let a = parseInt(card[j+1].textContent);
+                    let b = parseInt(card[j].textContent);
+                    if(a < b)
+                    {
+                        card[j+1].style.visibility = "hidden";
+                        card[j].style.visibility = "hidden";
+                        let b1 = document.createElement("div");
+                        let b2 = document.createElement("div");
+                        b1.textContent=a;
+                        b2.textContent=b;
+                        document.body.appendChild(b1);
+                        document.body.appendChild(b2);
+                        const rect1 = card[j+1].getBoundingClientRect();
+                        const rect2 = card[j].getBoundingClientRect();
+                        b1.style.cssText = 'margin-left: 0.5vw; width : '+ 1.2*parseFloat(card[j+1].clientWidth) +'px; height : '+ 1.2*parseFloat(card[j+1].clientHeight)+'px; background-image: linear-gradient(30deg, #1fcde4 30%, #2113e2);border : 4.8px solid rgb(172, 196, 248);border-radius: 12%;font-size : 6vh; text-align: center;line-height: 24vh; position : absolute; top : ' + rect1.top + 'px; left:'+rect1.left+'px';
+                        b2.style.cssText = 'margin-left: 0.5vw; width : '+ card[j].clientWidth +'px; height : '+ card[j].clientHeight+'px; background-image: linear-gradient(30deg, #1fcde4 30%, #2113e2);border : 4px solid rgb(172, 196, 248);border-radius: 12%;font-size : 5vh; text-align: center;line-height: 20vh; position : absolute; top : ' + rect2.top + 'px; left:'+rect2.left+'px';
+                        card[j].textContent = a;
+                        card[j+1].textContent = b;
+                        card[j+1].classList.remove("current");
+                        card[j].classList.add("current");
+                        function flow(){
+                                return new Promise(resolve => {
+                                    let id = setInterval(function(){
+                                        if(parseFloat(b1.style.left) <= parseFloat(rect2.left)){
+                                            resolve();
+                                            clearInterval(id);
+                                        }
+                                        else
+                                        {
+                                            let pos = parseFloat(b1.style.left) - 1;
+                                            b1.style.left = pos + "px"; 
+                                            let pos1 = parseFloat(b2.style.left) + 1;
+                                            b2.style.left = pos1 + "px";
+                                        }
+                                    },10);
+                                });
+                            }
+                            await flow();
+                            b1.remove();
+                            b2.remove();
+                            card[j].style.visibility = "visible";
+                            card[j+1].style.visibility = "visible";
+                            if(start == 0)
+                            {
+                            card[j].style.cssText = 'transition: 1s;';
+                            card[j].classList.remove("current");
+                            await sleep(1500);
+                            card[j].style.cssText = 'transition: 0s;';
+                            return ;
+                            }
+
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+                if(j+1>=0)
+                {
+                card[j+1].style.cssText = 'transition: 1s;';
+                card[j+1].classList.remove("current");
+                await sleep(1500);
+                card[j+1].style.cssText = 'transition: 0s;';
+                }
+                
+            }
+            
+        });
+
+        document.getElementById('Stop').addEventListener("click",function(){
+            start = 0;
+        });
+
+    </script>
+</body>
+</html>

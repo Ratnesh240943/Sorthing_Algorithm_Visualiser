@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+    <style>
+        html, body{
+            width : 100%;
+            height : 100%;
+            margin : 0;
+            padding: 0;
+        }
+        nav{
+            margin: 0;
+            background-image : linear-gradient(45deg, cyan , pink);
+            height : 20vh;
+            width : 100%
+        }
+        nav ul{
+            width : 100%;
+            padding : 0;
+            list-style: none;
+            text-decoration: none;
+            margin : 0;
+            display : flex;
+            justify-content: space-evenly;
+            align-items: center;
+            height: 100%;
+            width : 100%;
+            font-family: 'Poppins', sans-serif;
+            font-weight: bolder;
+            font-size: 6vh;
+            color : white;
+            
+        }
+        nav li{
+            padding : 2vh 5vh;
+            border: 8px solid white;
+            border-radius: 1em;
+            cursor : pointer;
+            transition : 1s;
+        }
+        nav li:hover{
+            color : black;
+            background : white;
+        }
+        .container {
+            box-sizing: border-box;
+            height : 80vh;
+            border : 10px solid blue;
+            display : flex;
+            flex-flow: column;
+        }
+        .container1{
+            display : flex;
+            justify-content: center;
+            align-items: center;
+            flex-grow: 1;
+        }
+        .bubbles{
+            display : inline-block;
+            margin : 1.2vw;
+            width : 13vh;
+            height : 13vh;
+            background-image: linear-gradient(30deg, #1fcde4 30%, #2113e2);
+            border-radius: 50%;
+            border : 4px solid rgb(172, 196, 248);
+            font-size : 5vh;
+            text-align: center;
+            line-height: 13vh;
+        }
+        .bubbles.active {
+            background-image: linear-gradient(30deg, #ec9167 30%, #f70909);
+            border : 4px solid rgb(236, 14, 162);
+        }
+
+        .bubbles.exchange {
+            background-image: linear-gradient(30deg, #65f789 30%, #0cff04);
+            border : 4px solid rgb(226, 248, 104);
+        }
+        #heading{
+            font-family: 'Poppins', sans-serif;
+            color : black;
+            font-size : 7vh;
+            text-align: center;
+            margin-top: 1vh;
+            width : 100%;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li id="Start">Start</li>
+            <li id="Stop">Stop</li>
+        </ul>
+    </nav>
+    <div class="container">
+        <div id="heading">Bubble Sort</div>
+        <div class="container1">
+        <div class="bubbles"></div>
+        <div class="bubbles"></div>
+        <div class="bubbles"></div>
+        <div class="bubbles"></div>
+        <div class="bubbles"></div>
+        <div class="bubbles"></div>
+        <div class="bubbles"></div>
+        <div class="bubbles"></div>
+        <div class="bubbles"></div>
+        <div class="bubbles"></div>
+    </div>
+    </div>
+    <script>
+        let bubble = document.getElementsByClassName('bubbles');
+        for (let index = 0; index < bubble.length; index++) {
+            bubble[index].textContent = Math.floor(Math.random() * 100) + 1;
+        }
+        function sleep(ms){
+            return new Promise(resolve => setTimeout(resolve,ms));
+        }
+        let start = 0;
+        document.getElementById('Start').addEventListener("click",async function(){
+            start = 0;
+            await sleep(2600);
+            start = 1;
+            
+            
+            for(let i = 1; i < bubble.length; i++)
+            {
+                let swap = 0;
+                for(let j = 0; j < bubble.length-i; j++)
+                {
+                    bubble[j].classList.add("active");
+                    bubble[j+1].classList.add("exchange");
+                    await sleep(2000);
+                    let a = parseInt(bubble[j].textContent);
+                    let b = parseInt(bubble[j+1].textContent);
+                        if(a > b)
+                        {
+                            bubble[j].style.visibility = "hidden";
+                            bubble[j+1].style.visibility = "hidden";
+                            let b1 = document.createElement("div");
+                            let b2 = document.createElement("div");
+                            b1.textContent=a;
+                            b2.textContent=b;
+                            document.body.appendChild(b1);
+                            document.body.appendChild(b2);
+                            const rect1 = bubble[j].getBoundingClientRect();
+                            const rect2 = bubble[j+1].getBoundingClientRect();
+                            b1.style.cssText = 'margin-left: 0.6vw; width : '+ bubble[j].clientWidth +'px; height : '+ bubble[j].clientHeight+'px; background-image: linear-gradient(30deg, #ec9167 30%, #f70909);border : 4px solid rgb(236, 14, 162);border-radius: 50%;font-size : 5vh; text-align: center;line-height: 13vh; position : absolute; top : ' + rect1.top + 'px; left:'+rect1.left+'px';
+                            b2.style.cssText = 'margin-left: 0.6vw; width : '+ bubble[j+1].clientWidth +'px; height : '+bubble[j+1].clientHeight+'px;background-image: linear-gradient(30deg, #65f789 30%, #0cff04); border : 4px solid rgb(226, 248, 104); border-radius: 50%; font-size : 5vh; text-align: center;line-height: 13vh; position : absolute ; top : ' + rect2.top + 'px; left:'+ rect2.left+'px';
+                            bubble[j].textContent = b;
+                            bubble[j+1].textContent = a;
+                            swap++;
+                            function flow(){
+                                return new Promise(resolve => {
+                                    let id = setInterval(function(){
+                                        if(parseFloat(b1.style.left) >= parseFloat(rect2.left)){
+                                            resolve();
+                                            clearInterval(id);
+                                        }
+                                        else
+                                        {
+                                            let pos = parseFloat(b1.style.left) + 1;
+                                            b1.style.left = pos + "px"; 
+                                            let pos1 = parseFloat(b2.style.left) - 1;
+                                            b2.style.left = pos1 + "px";
+
+                                        }
+                                    },10);
+                                });
+                            }
+                            await flow();
+                            b1.remove();
+                            b2.remove();
+                            bubble[j].style.visibility = "visible";
+                            bubble[j+1].style.visibility = "visible";
+                        }
+                        
+                        bubble[j].classList.remove("active");
+                        bubble[j+1].classList.remove("exchange");
+                        if(start == 0)
+                        return ;
+                        await sleep(500);
+                }
+                if(swap==0)
+                break;
+            }
+        });
+        document.getElementById('Stop').addEventListener("click",function(){
+            start = 0;
+        });
+    </script>
+</body>
+</html>
